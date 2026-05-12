@@ -27,9 +27,11 @@ const app = new Hono()
   // Better Auth mounts its own routes under /api/auth/* and handles its own CORS.
   .on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
-const routes = app
+// `_routes` is consumed only by `typeof` to drive hono/rpc inference.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _routes = app
   .route("/uploads", uploadsRoute)
   .route("/agents", agentsRoute);
 
-export type AppType = typeof routes;
+export type AppType = typeof _routes;
 export { app };

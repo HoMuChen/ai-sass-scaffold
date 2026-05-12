@@ -40,7 +40,7 @@ export async function presignUpload(input: {
   contentType: string;
   expiresInSeconds?: number;
 }): Promise<{ key: string; uploadUrl: string; publicUrl: string; expiresInSeconds: number }> {
-  const safeName = input.filename.replace(/[^\w.\-]+/g, "_");
+  const safeName = input.filename.replace(/[^\w.-]+/g, "_");
   const key = `u/${input.userId}/${Date.now()}-${randomUUID()}-${safeName}`;
   const expiresInSeconds = input.expiresInSeconds ?? 300;
 
