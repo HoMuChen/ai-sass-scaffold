@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm turbo run typecheck
+
+      - name: Lint
+        run: pnpm turbo run lint
+
+      # Blueprint §5: PR must not merge without an up-to-date drizzle migration.
+      - name: Check drizzle migrations are committed
+        run: |
+          pnpm --filter @repo/db db:generate
+          if [ -n "$(git status --porcelain packages/db/drizzle)" ]; then
+            echo "::error::Uncommitted drizzle migrations detected — run pnpm db:generate locally and commit."
+            git --no-pager diff packages/db/drizzle
+            exit 1
+          fi
+        env:
+          # drizzle-kit doesn't connect to a real DB for `generate`, but the
+          # config still asserts the var is set.
+          DATABASE_URL: postgres://placeholder:placeholder@localhost:5432/placeholder
