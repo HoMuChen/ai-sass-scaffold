@@ -14,6 +14,8 @@ const concurrency = Number(process.env.WORKER_CONCURRENCY ?? 4);
 const worker = new Worker(
   "agent-runs",
   async (job) => {
+    // The API now enqueues organization-aware payloads; the worker still keys
+    // status updates by run ID after validating the full payload shape.
     const payload = agentJobPayloadSchema.parse(job.data);
     const handler = agentRegistry[payload.agent];
     if (!handler) throw new Error(`unknown agent: ${payload.agent}`);

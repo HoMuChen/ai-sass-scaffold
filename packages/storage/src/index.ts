@@ -35,13 +35,13 @@ const publicBaseUrl = process.env.S3_PUBLIC_URL ?? endpoint ?? "";
  * Per blueprint §3 storage layer — never proxy bytes through the API.
  */
 export async function presignUpload(input: {
-  userId: string;
+  organizationId: string;
   filename: string;
   contentType: string;
   expiresInSeconds?: number;
 }): Promise<{ key: string; uploadUrl: string; publicUrl: string; expiresInSeconds: number }> {
   const safeName = input.filename.replace(/[^\w.-]+/g, "_");
-  const key = `u/${input.userId}/${Date.now()}-${randomUUID()}-${safeName}`;
+  const key = `orgs/${input.organizationId}/uploads/${Date.now()}-${randomUUID()}-${safeName}`;
   const expiresInSeconds = input.expiresInSeconds ?? 300;
 
   const cmd = new PutObjectCommand({

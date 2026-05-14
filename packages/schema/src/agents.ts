@@ -30,6 +30,7 @@ export type AgentRun = z.infer<typeof agentRunSchema>;
 /** Queue job payload that the API enqueues and the worker consumes. */
 export const agentJobPayloadSchema = z.object({
   runId: z.string(),
+  organizationId: z.string(),
   userId: z.string(),
   agent: z.string(),
   input: z.record(z.unknown()),
