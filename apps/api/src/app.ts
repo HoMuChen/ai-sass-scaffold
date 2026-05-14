@@ -2,8 +2,8 @@ import { auth } from "@repo/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { agentsRoute } from "./routes/agents.js";
-import { uploadsRoute } from "./routes/uploads.js";
+import { createAgentsRoute } from "./routes/agents.js";
+import { createUploadsRoute } from "./routes/uploads.js";
 
 /**
  * Hono app — single source of truth for the public API surface.
@@ -30,8 +30,8 @@ const app = new Hono()
 // `_routes` is consumed only by `typeof` to drive hono/rpc inference.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _routes = app
-  .route("/uploads", uploadsRoute)
-  .route("/agents", agentsRoute);
+  .route("/uploads", createUploadsRoute())
+  .route("/agents", createAgentsRoute());
 
 export type AppType = typeof _routes;
 export { app };

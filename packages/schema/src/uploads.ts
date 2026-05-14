@@ -23,3 +23,8 @@ export const presignDownloadRequestSchema = z.object({
   key: z.string().min(1),
 });
 export type PresignDownloadRequest = z.infer<typeof presignDownloadRequestSchema>;
+
+export const presignDownloadResponseSchema = z.object({
+  url: z.string().url(),
+});
+export type PresignDownloadResponse = z.infer<typeof presignDownloadResponseSchema>;

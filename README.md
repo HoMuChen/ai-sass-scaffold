@@ -77,6 +77,15 @@ pnpm docker:up         # start local Postgres / Redis / MinIO
 pnpm docker:down       # stop containers
 ```
 
+## Multitenancy model
+
+This scaffold uses Better Auth organizations for multitenancy.
+
+- Users are global identities
+- Shared business data is scoped by `organizationId`
+- An authenticated request must have an active organization
+- Members in the same organization can see the same organization-scoped data
+
 ## Deployment
 
 API and worker are designed for container PaaS (Railway / Render / Fly.io):

@@ -20,3 +20,10 @@ export const sessionUserSchema = z.object({
   createdAt: z.string(),
 });
 export type SessionUser = z.infer<typeof sessionUserSchema>;
+
+export const activeOrganizationSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+});
+export type ActiveOrganization = z.infer<typeof activeOrganizationSchema>;
