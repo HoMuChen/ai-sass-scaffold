@@ -30,7 +30,7 @@ export type PersonalOrganizationDeps = {
 function slugifySegment(value: string): string {
   const normalized = value
     .normalize("NFKD")
-    .replace(/[^\x00-\x7F]/g, "")
+    .replace(/[^\p{ASCII}]/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");

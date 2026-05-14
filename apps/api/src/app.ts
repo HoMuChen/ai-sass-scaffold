@@ -28,7 +28,6 @@ const app = new Hono()
   .on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 // `_routes` is consumed only by `typeof` to drive hono/rpc inference.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _routes = app
   .route("/uploads", createUploadsRoute())
   .route("/agents", createAgentsRoute());
